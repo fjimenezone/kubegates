@@ -1,0 +1,40 @@
+#
+# This file can only be sourced
+if [[  ${BASH_SOURCE-} = $0 ]]; then
+    echo "You must source this file: \$ source $0" >&2
+    exit 33
+fi
+
+# Prevent apply the source multiple times in the same terminal session
+if [[ -n $CLUSTER_NAME ]]; then
+    echo "No nested environments allowed" >&2
+else
+    CONF="config"
+    
+    # Path of invoked source argument
+    SOURCE_FILE=$(realpath -s ${BASH_SOURCE})
+
+    # It doesn't make sense to activate outside an k8s cluster
+    if [[ ${SOURCE_FILE} =~ lib/activate ]]; then
+        echo "activate needs a k8s cluster"
+        exit 1
+    fi
+
+    # Path to the cluster directory
+    CLUSTER_DIR_NAME=$(dirname ${SOURCE_FILE})
+
+    # The cluster name
+    CLUSTER_NAME=$(basename ${CLUSTER_DIR_NAME})
+    
+    # Push binary directory to the head of PATH
+    export PATH="${CLUSTER_DIR_NAME}:${PATH}"
+    
+    # Point kubectl to the right cluster config
+    export KUBECONFIG=${CLUSTER_DIR_NAME}/${CONF}
+    
+    # Use an individual helm directory for the project
+    export HELM_HOME=${CLUSTER_DIR_NAME}/.helm
+    
+    # Add a bit of text to the terminal prompt
+    PS1="(k8s ${CLUSTER_NAME}) ${PS1}"
+fi
