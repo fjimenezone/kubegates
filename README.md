@@ -70,3 +70,17 @@ At any time you may get the original prompt and terminal back by deactivating
 ```
 deactivate
 ```
+
+## Many possibilities
+
+Once you have kubegates setup you can have many options available to access your clusters.
+One posibility is to create alias
+
+```
+alias kqa1="source kubegates/clientname/qa-eks-1/activate"
+alias kstg0="source kubegates/clientname/stg-eks-0/activate"
+```
+
+Another posibility is to use a multiplexer terminal that allows you to automatically, source the cluster name and create a session for each cluster.
+
+Look into the `script konnect.sh` for an example using tmux
