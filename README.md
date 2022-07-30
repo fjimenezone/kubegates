@@ -1,14 +1,14 @@
 # kubegates
 
-kubegates facilitates the use of multiple Kubernetes contexts, at the same time, safely in selective isolation.
+kubegates facilitates the use of multiple Kubernetes contexts, independenly of each other, safely, in a selective isolation.
 
-The scope of this concept was to make it possible to work with multiple Kubernetes clusters, withouth having to switch context continuously, and to manage different versions of kubectl client matching the version in the server.
+The scope of this concept was to make it possible to work with multiple Kubernetes clusters, withouth having to switch context continuously, and to manage different versions of the kubectl client to match the version in the server.
 
 ## Set up
 
 Start by creating a root directory named `kubegates` and under it, two other directories: `lib` and `bin`</br>
 Copy the file `activate` into `lib` and download the versions you need of the binary kubectl into `bin`. Rename kubectl with a suffix that represents the specific release version. You may also make use of other binaries like helm</br>
-Look in this repo, under the directoy `utils` for some scripts that will help you to do download versions of kubectl and helm. The scripts might need some modifications to accomodate how your directory hierachy.
+Look in this repo, under the directoy `utils` for some scripts that will help you to do download versions of kubectl and helm. The scripts might need some modifications to accomodate your directory structure.
 
 After that, build your hierachy tree with organization identifiers (clients, companies, teams, business units). Under each organizational group create a directory for each kubernetes cluster. This kubernetes cluster name will be verified when activating it, therefore, it must match the given context cluster name. Use symbolic links to target the activate file in `lib`, the binaries targets.
 Still, under the cluster directory create a kubernetes config file that contains only the context you are trying to isolate.
